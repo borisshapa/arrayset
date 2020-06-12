@@ -2,11 +2,20 @@ package ru.ifmo.rain.shaposhnikov.arrayset;
 
 import java.util.*;
 
+/**
+ * An immutable ordered set on an array.
+ *
+ * @param <E> type of data stored
+ * @author Boris Shaposhnikov
+ */
 public class ArraySet<E> extends AbstractSet<E> implements NavigableSet<E> {
 
     private final List<E> data;
     private final Comparator<? super E> comparator;
 
+    /**
+     * Creates an empty set
+     */
     public ArraySet() {
         data = Collections.emptyList();
         comparator = null;
@@ -17,14 +26,32 @@ public class ArraySet<E> extends AbstractSet<E> implements NavigableSet<E> {
         this.comparator = getComparatorOrNull(comparator);
     }
 
+    /**
+     * Constructs a new array set containing the elements in the specified collection,
+     * sorted according to the natural ordering of its elements.
+     *
+     * @param collection on the basis of which to build a set
+     */
     public ArraySet(Collection<? extends E> collection) {
         this(collection, null);
     }
 
+    /**
+     * Constructs a new, empty array set, sorted according to the specified comparator.
+     *
+     * @param comparator how to sort items
+     */
     public ArraySet(Comparator<? super E> comparator) {
         this(Collections.emptyList(), comparator);
     }
 
+    /**
+     * Constructs a new array set containing the elements in the specified collection,
+     * sorted according to the specified comparator
+     *
+     * @param collection on the basis of which to build a set
+     * @param comparator how to sort items
+     */
     public ArraySet(Collection<? extends E> collection, Comparator<? super E> comparator) {
         TreeSet<E> tmpTreeSet = new TreeSet<>(comparator);
         tmpTreeSet.addAll(collection);
@@ -103,7 +130,7 @@ public class ArraySet<E> extends AbstractSet<E> implements NavigableSet<E> {
 
     @Override
     public NavigableSet<E> descendingSet() {
-        return new ArraySet<>(new ReversableList<>(data), Collections.reverseOrder(comparator));
+        return new ArraySet<>(new ReversibleList<>(data), Collections.reverseOrder(comparator));
     }
 
     @Override
